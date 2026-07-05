@@ -1,0 +1,5 @@
+;; org-w3-webgpu — raw W3C WebGPU JS API thin wrapper (browser-only, no EDN
+;; render-graph/hiccup layer — that domain vocabulary lives in kami-webgpu,
+;; which consumes this the way kami-engine consumes org-materialx/org-openusd).
+{:paths ["src"]
+ :deps  {}}
