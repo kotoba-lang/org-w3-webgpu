@@ -66,6 +66,13 @@
   [device desc]
   (.createBuffer device desc))
 
+(defn destroy-buffer!
+  "buffer.destroy() — releases the GPU-side allocation. Call before dropping
+  the last reference to a buffer you're replacing (e.g. growing a dynamically
+  resized instance buffer), not on one still in use by a pending submission."
+  [buffer]
+  (.destroy buffer))
+
 (defn write-buffer!
   "queue.writeBuffer(buffer, offset, data). data must already be a typed array."
   ([queue buffer data] (write-buffer! queue buffer 0 data))
