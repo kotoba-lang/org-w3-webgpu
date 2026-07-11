@@ -27,25 +27,25 @@
 (defn request-adapter!
   "-> Promise<GPUAdapter|nil>. opts, if given, is a GPURequestAdapterOptions JS object."
   ([] (request-adapter! nil))
-  ([opts] (.requestAdapter (gpu) opts)))
+  ([opts] (let [^js gpu-api (gpu)] (.requestAdapter gpu-api opts))))
 
 (defn request-device!
   "-> Promise<GPUDevice>. opts, if given, is a GPUDeviceDescriptor JS object."
   ([adapter] (request-device! adapter nil))
-  ([adapter opts] (.requestDevice adapter opts)))
+  ([^js adapter opts] (.requestDevice adapter opts)))
 
 (defn preferred-canvas-format []
-  (.getPreferredCanvasFormat (gpu)))
+  (let [^js gpu-api (gpu)] (.getPreferredCanvasFormat gpu-api)))
 
 (defn get-context
   "canvas.getContext(\"webgpu\") -> GPUCanvasContext, or nil."
-  [canvas]
+  [^js canvas]
   (.getContext canvas "webgpu"))
 
 (defn configure-context!
   "ctx.configure(desc) — desc is a GPUCanvasConfiguration JS object
    (must include :device/:format, spelled `device`/`format` as JS keys)."
-  [ctx desc]
+  [^js ctx desc]
   (.configure ctx desc))
 
 (defn- ->CONST [flag]
@@ -63,7 +63,7 @@
 
 (defn create-buffer!
   "device.createBuffer(desc), desc: GPUBufferDescriptor JS object."
-  [device desc]
+  [^js device desc]
   (.createBuffer device desc))
 
 (defn destroy-buffer!
@@ -76,76 +76,91 @@
 (defn write-buffer!
   "queue.writeBuffer(buffer, offset, data). data must already be a typed array."
   ([queue buffer data] (write-buffer! queue buffer 0 data))
-  ([queue buffer offset data] (.writeBuffer queue buffer offset data)))
+  ([^js queue buffer offset data] (.writeBuffer queue buffer offset data)))
+
+(defn device-queue
+  "device.queue. Property access remains confined to the raw W3C binding."
+  [^js device]
+  (.-queue device))
+
+(defn write-texture!
+  "queue.writeTexture(destination, data, layout, size)."
+  [^js queue destination data layout size]
+  (.writeTexture queue destination data layout size))
+
+(defn copy-external-image-to-texture!
+  "queue.copyExternalImageToTexture(source, destination, size)."
+  [^js queue source destination size]
+  (.copyExternalImageToTexture queue source destination size))
 
 (defn create-texture!
   "device.createTexture(desc), desc: GPUTextureDescriptor JS object."
-  [device desc]
+  [^js device desc]
   (.createTexture device desc))
 
 (defn create-view
   "texture.createView(desc?), desc: GPUTextureViewDescriptor JS object."
   ([texture] (create-view texture nil))
-  ([texture desc] (.createView texture desc)))
+  ([^js texture desc] (.createView texture desc)))
 
 (defn create-sampler!
-  [device desc]
+  [^js device desc]
   (.createSampler device desc))
 
 (defn create-shader-module!
   "device.createShaderModule(desc), desc: #js {:code <wgsl-string>}."
-  [device desc]
+  [^js device desc]
   (.createShaderModule device desc))
 
 (defn create-render-pipeline!
-  [device desc]
+  [^js device desc]
   (.createRenderPipeline device desc))
 
 (defn get-bind-group-layout
-  [pipeline index]
+  [^js pipeline index]
   (.getBindGroupLayout pipeline index))
 
 (defn create-bind-group!
-  [device desc]
+  [^js device desc]
   (.createBindGroup device desc))
 
 (defn create-command-encoder!
   ([device] (create-command-encoder! device nil))
-  ([device desc] (.createCommandEncoder device desc)))
+  ([^js device desc] (.createCommandEncoder device desc)))
 
 (defn begin-render-pass!
-  [encoder desc]
+  [^js encoder desc]
   (.beginRenderPass encoder desc))
 
-(defn set-pipeline! [pass pipeline] (.setPipeline pass pipeline))
-(defn set-bind-group! [pass index bind-group] (.setBindGroup pass index bind-group))
+(defn set-pipeline! [^js pass pipeline] (.setPipeline pass pipeline))
+(defn set-bind-group! [^js pass index bind-group] (.setBindGroup pass index bind-group))
 (defn set-vertex-buffer!
-  ([pass slot buffer] (.setVertexBuffer pass slot buffer))
-  ([pass slot buffer offset] (.setVertexBuffer pass slot buffer offset)))
+  ([^js pass slot buffer] (.setVertexBuffer pass slot buffer))
+  ([^js pass slot buffer offset] (.setVertexBuffer pass slot buffer offset)))
 (defn set-index-buffer!
-  [pass buffer format]
+  [^js pass buffer format]
   (.setIndexBuffer pass buffer format))
 (defn draw-indexed!
-  ([pass index-count] (.drawIndexed pass index-count))
-  ([pass index-count instance-count] (.drawIndexed pass index-count instance-count))
-  ([pass index-count instance-count first-index] (.drawIndexed pass index-count instance-count first-index))
-  ([pass index-count instance-count first-index base-vertex]
+  ([^js pass index-count] (.drawIndexed pass index-count))
+  ([^js pass index-count instance-count] (.drawIndexed pass index-count instance-count))
+  ([^js pass index-count instance-count first-index] (.drawIndexed pass index-count instance-count first-index))
+  ([^js pass index-count instance-count first-index base-vertex]
    (.drawIndexed pass index-count instance-count first-index base-vertex))
-  ([pass index-count instance-count first-index base-vertex first-instance]
+  ([^js pass index-count instance-count first-index base-vertex first-instance]
    (.drawIndexed pass index-count instance-count first-index base-vertex first-instance)))
-(defn end-pass! [pass] (.end pass))
+(defn end-pass! [^js pass] (.end pass))
 
 (defn finish!
   "command-encoder.finish() -> GPUCommandBuffer."
-  ([encoder] (.finish encoder))
-  ([encoder desc] (.finish encoder desc)))
+  ([^js encoder] (.finish encoder))
+  ([^js encoder desc] (.finish encoder desc)))
 
 (defn submit!
   "queue.submit([...command-buffers])."
-  [queue command-buffers]
+  [^js queue command-buffers]
   (.submit queue (into-array command-buffers)))
 
 (defn current-texture
   "ctx.getCurrentTexture()."
-  [ctx]
+  [^js ctx]
   (.getCurrentTexture ctx))
