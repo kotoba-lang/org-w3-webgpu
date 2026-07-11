@@ -70,7 +70,7 @@
   "buffer.destroy() — releases the GPU-side allocation. Call before dropping
   the last reference to a buffer you're replacing (e.g. growing a dynamically
   resized instance buffer), not on one still in use by a pending submission."
-  [buffer]
+  [^js buffer]
   (.destroy buffer))
 
 (defn write-buffer!
