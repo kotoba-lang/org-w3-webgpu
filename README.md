@@ -56,6 +56,7 @@ Covered so far: adapter/device request, canvas context (`get-context!`/
 bind-group creation, command encoding + render-pass recording
 (`set-pipeline!`/`set-bind-group!`/`set-vertex-buffer!`/`set-index-buffer!`/
 `draw-indexed!`/`end-pass!`/`finish!`/`submit!`), and the
+non-indexed `draw!` call used by fullscreen post-processing triangles, plus the
 `buffer-usage`/`texture-usage` flag-constant helpers.
 
 ## Status
