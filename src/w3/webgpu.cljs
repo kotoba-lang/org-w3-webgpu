@@ -148,6 +148,15 @@
    (.drawIndexed pass index-count instance-count first-index base-vertex))
   ([^js pass index-count instance-count first-index base-vertex first-instance]
    (.drawIndexed pass index-count instance-count first-index base-vertex first-instance)))
+(defn draw!
+  "pass.draw(vertexCount, instanceCount?, firstVertex?, firstInstance?). Used by
+   fullscreen triangles and non-indexed procedural geometry."
+  ([^js pass vertex-count] (.draw pass vertex-count))
+  ([^js pass vertex-count instance-count] (.draw pass vertex-count instance-count))
+  ([^js pass vertex-count instance-count first-vertex]
+   (.draw pass vertex-count instance-count first-vertex))
+  ([^js pass vertex-count instance-count first-vertex first-instance]
+   (.draw pass vertex-count instance-count first-vertex first-instance)))
 (defn end-pass! [^js pass] (.end pass))
 
 (defn finish!
