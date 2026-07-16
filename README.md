@@ -55,7 +55,9 @@ Covered so far: adapter/device request, canvas context (`get-context!`/
 `configure-context!`), buffer/texture/sampler/shader-module/pipeline/
 bind-group creation, command encoding + render-pass recording
 (`set-pipeline!`/`set-bind-group!`/`set-vertex-buffer!`/`set-index-buffer!`/
-`draw-indexed!`/`end-pass!`/`finish!`/`submit!`), and the
+`draw-indexed!`/`end-pass!`/`finish!`/`submit!`), reusable render-bundle
+recording/execution (`create-render-bundle-encoder!`/
+`finish-render-bundle!`/`execute-bundles!`), and the
 non-indexed `draw!` call used by fullscreen post-processing triangles, plus the
 `buffer-usage`/`texture-usage` flag-constant helpers.
 
