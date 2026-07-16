@@ -132,6 +132,17 @@
   [^js encoder desc]
   (.beginRenderPass encoder desc))
 
+(defn create-render-bundle-encoder!
+  "device.createRenderBundleEncoder(desc) -> GPURenderBundleEncoder."
+  [^js device desc]
+  (.createRenderBundleEncoder device desc))
+
+(defn execute-bundles!
+  "pass.executeBundles(bundles). Render bundles retain referenced resources
+   and may be replayed across frames while those resources remain valid."
+  [^js pass bundles]
+  (.executeBundles pass (into-array bundles)))
+
 (defn set-pipeline! [^js pass pipeline] (.setPipeline pass pipeline))
 (defn set-bind-group! [^js pass index bind-group] (.setBindGroup pass index bind-group))
 (defn set-vertex-buffer!
@@ -161,6 +172,11 @@
 
 (defn finish!
   "command-encoder.finish() -> GPUCommandBuffer."
+  ([^js encoder] (.finish encoder))
+  ([^js encoder desc] (.finish encoder desc)))
+
+(defn finish-render-bundle!
+  "render-bundle-encoder.finish() -> GPURenderBundle."
   ([^js encoder] (.finish encoder))
   ([^js encoder desc] (.finish encoder desc)))
 
