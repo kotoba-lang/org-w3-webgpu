@@ -98,6 +98,13 @@
   [^js device desc]
   (.createTexture device desc))
 
+(defn destroy-texture!
+  "texture.destroy() — releases the GPU-side allocation. Same contract as
+  destroy-buffer!: call when replacing a texture (e.g. a depth attachment
+  recreated on canvas resize), not on one still bound to a pending submission."
+  [^js texture]
+  (.destroy texture))
+
 (defn create-view
   "texture.createView(desc?), desc: GPUTextureViewDescriptor JS object."
   ([texture] (create-view texture nil))
